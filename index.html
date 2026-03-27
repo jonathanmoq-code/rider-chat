@@ -25,8 +25,32 @@ body.light{
 html,body{height:100%;color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden;background:var(--bg);}
 @keyframes waveFlow{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 @keyframes grainMove{0%{transform:translate(0,0);}25%{transform:translate(-2px,2px);}50%{transform:translate(2px,-2px);}75%{transform:translate(-1px,1px);}100%{transform:translate(0,0);}}
-body::before{content:'';position:fixed;inset:0;z-index:0;background:linear-gradient(135deg,#0e0e18 0%,#130e2a 25%,#0d1820 50%,#1a0e22 75%,#0e0e18 100%);background-size:400% 400%;animation:waveFlow 18s ease infinite;pointer-events:none;}
-body.light::before{background:linear-gradient(135deg,#f0eefb 0%,#e9e4fa 25%,#edf2fb 50%,#f4eef8 75%,#f0eefb 100%);background-size:400% 400%;animation:waveFlow 18s ease infinite;}body.light .home-topbar,body.light .bottom-bar,body.light .chat-topbar,body.light .input-bar,body.light .piz-topbar,body.light .piz-toolbar,body.light .piz-footer{background:rgba(255,255,255,0.78) !important;}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:linear-gradient(135deg,#0e0e18 0%,#130e2a 25%,#0d1820 50%,#1a0e22 75%,#0e0e18 100%);
+  background-size:400% 400%;animation:waveFlow 18s ease infinite;pointer-events:none;
+  transition:opacity 0.6s;
+}
+/* Photo background layer */
+#app-bg{
+  position:fixed;inset:0;z-index:0;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  filter:blur(28px) saturate(1.2);
+  transform:scale(1.08);
+  opacity:0;transition:opacity 0.8s ease;
+  pointer-events:none;
+}
+#app-bg.visible{opacity:1;}
+#app-bg-overlay{
+  position:fixed;inset:0;z-index:0;
+  background:rgba(8,8,16,0.62);
+  opacity:0;transition:opacity 0.8s ease;
+  pointer-events:none;
+}
+#app-bg-overlay.visible{opacity:1;}
+body.light #app-bg-overlay{background:rgba(240,238,252,0.55);}
+body.light::before{background:linear-gradient(135deg,#f0eefb 0%,#e9e4fa 25%,#edf2fb 50%,#f4eef8 75%,#f0eefb 100%);background-size:400% 400%;animation:waveFlow 18s ease infinite;}
+body.light .home-topbar,body.light .bottom-bar,body.light .chat-topbar,body.light .input-bar,body.light .piz-topbar,body.light .piz-toolbar,body.light .piz-footer{background:rgba(255,255,255,0.78) !important;}
 body::after{content:'';position:fixed;inset:-50%;z-index:0;width:200%;height:200%;opacity:0.022;background-repeat:repeat;animation:grainMove 0.9s steps(1) infinite;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");}
 
 @keyframes bounceIn{0%{opacity:0;transform:scale(0.85) translateY(8px);}60%{transform:scale(1.04) translateY(-3px);}80%{transform:scale(0.98) translateY(1px);}100%{opacity:1;transform:scale(1) translateY(0);}}
@@ -659,6 +683,9 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none;}
   </div>
 </div>
 
+<div id="app-bg"></div>
+<div id="app-bg-overlay"></div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -752,7 +779,13 @@ window.switchHomeTab=(tab,btn,type)=>{
 
 // ── Theme / Logout ──
 window.toggleTheme=()=>{ isLight=!isLight; document.body.classList.toggle('light',isLight); localStorage.setItem('riderTheme',isLight?'light':'dark'); };
-window.doLogout=async()=>{ setPresence(false); await signOut(auth); currentUser=null; currentUsername=''; showPage('auth-page'); };
+window.doLogout=async()=>{
+  setPresence(false); await signOut(auth); currentUser=null; currentUsername='';
+  const bg=document.getElementById('app-bg'); const ov=document.getElementById('app-bg-overlay');
+  if(bg){ bg.classList.remove('visible'); bg.style.backgroundImage=''; }
+  if(ov) ov.classList.remove('visible');
+  showPage('auth-page');
+};
 
 // ── Auth forms ──
 window.switchAuthTab=(tab)=>{
@@ -1229,7 +1262,26 @@ function loadMiInfo(){
     const av=document.getElementById('my-avatar');
     if(d.avatarEmoji){ av.textContent=d.avatarEmoji; av.style.background='transparent'; av.style.fontSize='22px'; }
     else if(d.avatarImg){ av.innerHTML=`<img src="${d.avatarImg}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`; }
+
+    // Update app background
+    updateAppBackground(d);
   });
+}
+
+function updateAppBackground(d){
+  const bg = document.getElementById('app-bg');
+  const overlay = document.getElementById('app-bg-overlay');
+  if(!bg || !overlay) return;
+  if(d.avatarImg){
+    bg.style.backgroundImage = `url('${d.avatarImg}')`;
+    bg.classList.add('visible');
+    overlay.classList.add('visible');
+    document.body.style.setProperty('--bg-has-photo','1');
+  } else {
+    bg.classList.remove('visible');
+    overlay.classList.remove('visible');
+    bg.style.backgroundImage = '';
+  }
 }
 
 window.openMiInfoModal=()=>{
@@ -1297,6 +1349,8 @@ window.handleAvatarUpload=async(input)=>{
       await set(ref(db,`users/${currentUser.uid}/avatarImg`),compressed);
       await set(ref(db,`users/${currentUser.uid}/avatarEmoji`),null);
       closeAvatarModal(); loadMiInfo(); showToast('Foto de perfil actualizada');
+      // Immediately update background
+      updateAppBackground({avatarImg: compressed});
     };
     img.src=e.target.result;
   };
