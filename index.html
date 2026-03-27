@@ -18,7 +18,7 @@
 body.light{
   --bg:#f4f3f8;--bg2:#ffffff;--bg3:#eeecf6;
   --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);
-  --text:#18171f;--text2:#6b6880;--text3:#a09db8;
+  --text:#0a0a0f;--text2:#2d2b3d;--text3:#6b6880;
   --accent:#7c6af7;--accent2:#5a49d4;--accent-bg:rgba(124,106,247,0.1);
   --green:#1a9e5c;
 }
@@ -162,6 +162,9 @@ body.light .bottom-tab.active svg{filter:drop-shadow(0 0 4px rgba(124,106,247,0.
 .conv-info{flex:1;min-width:0;}
 .conv-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .conv-last{font-size:12px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+body.light .conv-name{color:#0a0a0f;}
+body.light .conv-last{color:#4a4860;}
+body.light .conv-time{color:#6b6880;}
 .conv-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
 .conv-time{font-size:11px;color:var(--text3);}
 .unread-badge{background:var(--accent);color:#fff;font-size:10px;font-weight:600;min-width:18px;height:18px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 5px;}
@@ -764,9 +767,14 @@ function movePill(btn){
   pill.style.width=btnRect.width+'px';
 }
 
+const TAB_TITLES={'chats':'Conversaciones','grupos':'Grupos','contactos':'Contactos','miinfo':'Mi info'};
+
 window.switchHomeTab=(tab,btn,type)=>{
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
+  // Update topbar title
+  const titleEl=document.querySelector('.topbar-title');
+  if(titleEl) titleEl.textContent=TAB_TITLES[tab]||'Conversaciones';
   if(type==='btab'){
     document.querySelectorAll('.bottom-tab').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
