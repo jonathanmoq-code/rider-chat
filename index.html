@@ -398,24 +398,99 @@ body.light .color-dot.active{border-color:#333;}
   #home-page{width:100%;}
 }
 
-/* ── MI INFO ── */
-.mi-info-card{margin:16px 14px 4px;border-radius:24px;overflow:hidden;position:relative;cursor:pointer;}
-.mi-info-photo-wrap{position:relative;width:100%;aspect-ratio:3/4;max-height:420px;overflow:hidden;border-radius:24px;background:var(--bg3);}
+/* ── MI INFO — Event Card Style ── */
+#tab-miinfo{padding:0;position:relative;}
+.mi-info-card{margin:0;border-radius:0;overflow:visible;position:relative;cursor:default;}
+
+/* Full-bleed photo hero */
+.mi-info-photo-wrap{
+  position:relative;width:100%;
+  height:calc(100dvh - var(--bottom-bar) - var(--safe-bottom) - 46px);
+  min-height:480px;overflow:hidden;border-radius:0;background:var(--bg3);
+}
 .mi-info-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
-.mi-info-photo-emoji{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px;background:linear-gradient(135deg,var(--bg2),var(--bg3));}
-.mi-info-photo-empty{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text3);font-size:13px;}
-.mi-info-photo-empty svg{opacity:0.4;}
-.mi-info-change-photo{position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);border-radius:99px;padding:6px 12px;font-size:12px;font-weight:500;color:#fff;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;}
-.mi-info-glass{position:absolute;bottom:0;left:0;right:0;padding:20px 18px 20px;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.4) 60%,transparent 100%);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);}
-.mi-info-glass::before{content:'';position:absolute;bottom:0;left:0;right:0;height:60%;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);-webkit-mask:linear-gradient(to top,black 40%,transparent 100%);mask:linear-gradient(to top,black 40%,transparent 100%);z-index:0;}
+.mi-info-photo-emoji{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:100px;background:linear-gradient(160deg,#1a0a2e,#0a1a2e);}
+.mi-info-photo-empty{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,0.35);font-size:13px;background:linear-gradient(160deg,#110820,#081018);}
+.mi-info-photo-empty svg{opacity:0.3;}
+
+/* Top-right change photo button */
+.mi-info-change-photo{
+  position:absolute;top:14px;right:14px;z-index:10;
+  background:rgba(20,18,36,0.6);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.2);border-radius:99px;
+  padding:7px 14px;font-size:12px;font-weight:500;color:#fff;
+  cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'DM Sans',sans-serif;
+}
+
+/* Gradient + blur overlay at bottom of photo */
+.mi-info-glass{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:28px 18px 24px;
+  background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.55) 50%,transparent 100%);
+}
+.mi-info-glass::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:65%;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  -webkit-mask:linear-gradient(to top,black 45%,transparent 100%);
+  mask:linear-gradient(to top,black 45%,transparent 100%);z-index:0;
+}
 .mi-info-glass-content{position:relative;z-index:1;}
-.mi-info-username{font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.3px;}
-.mi-info-fullname{font-size:14px;color:rgba(255,255,255,0.75);margin-top:2px;margin-bottom:12px;}
-.mi-info-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.mi-info-username{font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.5px;line-height:1.15;text-align:center;}
+.mi-info-fullname{font-size:13px;color:rgba(255,255,255,0.65);margin-top:4px;margin-bottom:18px;text-align:center;}
+
+/* Action buttons — Going / Not Going / Maybe style */
+.mi-info-action-row{display:flex;gap:8px;justify-content:center;}
+.mi-info-action-btn{
+  flex:1;max-width:110px;
+  border:1.5px solid rgba(255,255,255,0.25);border-radius:99px;
+  padding:10px 0;font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.mi-info-action-btn.primary{background:#fff;color:#111;border-color:#fff;}
+.mi-info-action-check{
+  width:16px;height:16px;background:#22c55e;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+
+/* Frosted glass info card */
+.mi-info-bottom-card{
+  margin:12px 12px 0;border-radius:22px;
+  background:rgba(24,20,40,0.75);
+  backdrop-filter:blur(24px) saturate(1.5);-webkit-backdrop-filter:blur(24px) saturate(1.5);
+  border:1px solid rgba(255,255,255,0.09);
+  padding:14px 16px;
+}
+body.light .mi-info-bottom-card{background:rgba(248,246,255,0.78);border-color:rgba(0,0,0,0.07);}
+.mi-info-bottom-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.mi-info-bottom-av{
+  width:38px;height:38px;border-radius:50%;overflow:hidden;flex-shrink:0;
+  background:var(--bg3);display:flex;align-items:center;justify-content:center;
+  font-size:18px;border:2px solid var(--accent);color:var(--text3);
+}
+.mi-info-bottom-av img{width:100%;height:100%;object-fit:cover;}
+.mi-info-bottom-label{font-size:12px;font-weight:600;color:var(--accent2);}
+.mi-info-bottom-text{font-size:13px;color:var(--text2);line-height:1.5;}
+
+/* Edit scroll-hint button */
+.mi-info-scroll-hint{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  width:calc(100% - 24px);margin:10px 12px 14px;padding:11px 0;
+  background:rgba(255,255,255,0.06);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.1);border-radius:99px;
+  color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+}
+body.light .mi-info-scroll-hint{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.08);}
+
+/* Legacy compat */
+.mi-info-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;}
 .mi-info-fields-inline{display:flex;gap:8px;flex:1;flex-wrap:wrap;}
-.mi-info-pill{background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:99px;padding:5px 12px;font-size:12px;color:rgba(255,255,255,0.9);display:flex;align-items:center;gap:5px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.mi-info-edit-btn{background:rgba(255,255,255,0.95);border:none;border-radius:99px;padding:8px 18px;font-size:13px;font-weight:600;color:#1a1a2e;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;}
-body.light .mi-info-edit-btn{background:rgba(255,255,255,0.95);color:#1a1a2e;}
+.mi-info-pill{background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.18);border-radius:99px;padding:5px 12px;font-size:12px;color:rgba(255,255,255,0.85);display:flex;align-items:center;gap:5px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+body.light .mi-info-pill{background:rgba(0,0,0,0.06);color:var(--text2);border-color:rgba(0,0,0,0.1);}
+.mi-info-edit-btn{display:none;}
+body.light .mi-info-edit-btn{display:none;}
 
 /* Emoji picker for avatar */
 .emoji-av-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:8px 0;max-height:160px;overflow-y:auto;}
@@ -582,30 +657,66 @@ img{-webkit-user-drag:none;user-drag:none;pointer-events:none;}
     <div id="elastic-list-wrap">
     <div class="tab-panel" id="tab-miinfo">
       <div class="mi-info-card">
+
+        <!-- Hero photo full bleed -->
         <div class="mi-info-photo-wrap" id="mi-photo-wrap">
           <div class="mi-info-photo-empty" id="mi-photo-empty">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Toca para agregar foto
+            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Toca "📷 Foto" para agregar
           </div>
         </div>
+
+        <!-- Top-right: change photo -->
         <button class="mi-info-change-photo" onclick="openAvatarPicker()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          Cambiar foto
+          Foto
         </button>
+
+        <!-- Gradient overlay with name + action buttons -->
         <div class="mi-info-glass">
           <div class="mi-info-glass-content">
             <div class="mi-info-username" id="mi-username-display"></div>
             <div class="mi-info-fullname" id="mi-fullname-display"></div>
-            <div class="mi-info-row">
-              <div class="mi-info-fields-inline">
-                <div class="mi-info-pill" id="mi-phone-pill" style="display:none;">📞 <span id="mi-phone-display"></span></div>
-                <div class="mi-info-pill" id="mi-interests-pill" style="display:none;">🎯 <span id="mi-interests-display"></span></div>
-              </div>
-              <button class="mi-info-edit-btn" onclick="openMiInfoModal()">Editar</button>
+            <div class="mi-info-action-row">
+              <button class="mi-info-action-btn primary" onclick="openMiInfoModal()">
+                <span class="mi-info-action-check">
+                  <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>
+                </span>
+                Mi perfil
+              </button>
+              <button class="mi-info-action-btn" onclick="openMiInfoModal()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Editar
+              </button>
+              <button class="mi-info-action-btn" onclick="openMiInfoModal()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                Compartir
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Frosted glass info card -->
+      <div class="mi-info-bottom-card">
+        <div class="mi-info-bottom-header">
+          <div class="mi-info-bottom-av" id="mi-bottom-av">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="mi-info-bottom-label" id="mi-bottom-handle">@usuario</div>
+        </div>
+        <div class="mi-info-bottom-text" id="mi-bottom-bio">Toca <strong>Editar</strong> para completar tu perfil.</div>
+        <div class="mi-info-row">
+          <div class="mi-info-pill" id="mi-phone-pill" style="display:none;">📞 <span id="mi-phone-display"></span></div>
+          <div class="mi-info-pill" id="mi-interests-pill" style="display:none;">🎯 <span id="mi-interests-display"></span></div>
+        </div>
+      </div>
+
+      <!-- Edit button -->
+      <button class="mi-info-scroll-hint" onclick="openMiInfoModal()">
+        Editar perfil completo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button>
     </div>
 
     <div class="tab-panel active" id="tab-chats">
@@ -1435,6 +1546,22 @@ function loadMiInfo(){
     const intSpan=document.getElementById('mi-interests-display');
     if(d.intereses){ intSpan.textContent=d.intereses.slice(0,30)+(d.intereses.length>30?'...':''); intPill.style.display='flex'; }
     else{ intPill.style.display='none'; }
+
+    // Update bottom card
+    const bottomHandle=document.getElementById('mi-bottom-handle');
+    const bottomAv=document.getElementById('mi-bottom-av');
+    const bottomBio=document.getElementById('mi-bottom-bio');
+    if(bottomHandle) bottomHandle.textContent='@'+(d.username||'');
+    if(bottomBio){
+      const parts=[];
+      if(fullname) parts.push(`<strong>${fullname}</strong>`);
+      if(d.intereses) parts.push(d.intereses);
+      bottomBio.innerHTML=parts.length>0?parts.join(' · '):'Toca <strong>Editar</strong> para completar tu perfil.';
+    }
+    if(bottomAv){
+      if(d.avatarImg) bottomAv.innerHTML=`<img src="${d.avatarImg}" style="width:100%;height:100%;object-fit:cover;">`;
+      else if(d.avatarEmoji){ bottomAv.innerHTML=''; bottomAv.textContent=d.avatarEmoji; bottomAv.style.fontSize='20px'; }
+    }
 
     // Update topbar avatar
     const av=document.getElementById('my-avatar');
